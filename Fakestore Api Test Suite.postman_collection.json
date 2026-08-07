@@ -1,0 +1,725 @@
+{
+	"info": {
+		"_postman_id": "7c29ccb4-0f77-49b8-9067-4f30e84319aa",
+		"name": "Fakestore Api Test Suite",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25277418"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "TC_1 -  GET valid product - lower boundary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_1: Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"TC_1: Response contains real product data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('title');",
+									"    pm.expect(jsonData).to.have.property('price');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_2 - GET product - valid ID (upper boundary)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_2: Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"TC_2: Response contains real product data (last valid product)\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('title');",
+									"    pm.expect(jsonData).to.have.property('price');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_3 - GET product - past range (negative)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_3: Status code is 200 (no 404 behavior)\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"TC_3: Body is empty (product does not exist)\", function () {",
+									"    pm.expect(pm.response.text()).to.equal(\"\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/21",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_4 - GET valid range (negative)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 (API doesn't 404 on missing IDs)\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response body is empty for non-existent ID\", function () {",
+									"    pm.expect(pm.response.text()).to.equal(\"\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_5 - GET product - valid category filter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_5: Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/category/electronics",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"category",
+								"electronics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_6 - GET product - invalid category (negative)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_6: Status code is 200 (API doesn't 404 on invalid category)\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"TC_6: Returns empty array for non-existent category\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an('array');",
+									"    pm.expect(jsonData.length).to.equal(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}//products/category/toys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"",
+								"products",
+								"category",
+								"toys"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_7 - GET product  -  all 4 categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_7: Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"TC_7: Exactly 4 categories returned\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.equal(4);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}//products/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"",
+								"products",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_12 - POST add single product - valid credentials",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Faro Light Backpack 0.4\",\n  \"price\": 80.95,\n  \"description\": \"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday\",\n  \"category\": \"men's clothing\",\n  \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_13 - POST add single product- invalid  credentials (negative))",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Faro Light Backpack 0.4\",\n  \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Carts",
+			"item": [
+				{
+					"name": "TC_14 - GET carts - valid cart (lower boundary)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carts/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_15 -GET carts - valid upper product (higher boundary)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carts/7",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carts",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_16 - GET carts -past the real range (negative)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 (API doesn't 404 on missing IDs)\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response body is null for non-existent cart\", function () {",
+									"    pm.expect(pm.response.json()).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carts/8",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carts",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_17 - GET carts - below valid range(negative)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 (API doesn't 404 on missing IDs)\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response body is null for non-existent cart\", function () {",
+									"    pm.expect(pm.response.json()).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/carts/0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carts",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_18 - POST create cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_18: Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"pm.test(\"TC_18: Save new cart ID\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.environment.set(\"newCartId\", jsonData.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"date\": \"2026-08-06\",\n  \"products\": [\n    { \"productId\": 1, \"quantity\": 2 }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/carts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_19 - GET newly created cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_19: Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"TC_19: Confirms API does not persist created carts (mock behavior)\", function () {",
+									"    pm.expect(pm.response.json()).to.equal(null);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carts/{{newCartId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carts",
+								"{{newCartId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_20 - DELETE newly created cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_20: Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carts/{{newCartId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carts",
+								"{{newCartId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "TC_10 - GET users - last valid user (boundary)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_10: Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_11 - GET users - one past valid (negative))",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 (API doesn't 404 on missing IDs)\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/11",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"11"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "TC_8 - POST auth login - valid credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_8: Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"pm.test(\"TC_8: Token is returned\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('token');",
+									"    pm.environment.set(\"authToken\", jsonData.token);  // save for reuse",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\":\"johnd\",\"password\":\"m38rmF$\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_9 - POST auth login - wrong password (negative))",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"TC_9: Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\":\"johnd\",\"password\":\"wrongpass\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Status code is a recognized code\", function () {",
+					"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 400, 401]);",
+					"});",
+					"",
+					"pm.test(\"Response time is under 2000ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+					"});"
+				]
+			}
+		}
+	]
+}
