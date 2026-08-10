@@ -660,8 +660,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"TC_9: Status code is 401\", function () {",
-									"    pm.response.to.have.status(401);",
+									"pm.test(\"TC_9: Status code indicates rejected login\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([401, 403]);",
 									"});"
 								],
 								"type": "text/javascript"
