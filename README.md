@@ -27,7 +27,16 @@ newman run "Fakestore Api Test Suite.postman_collection.json" -e "FakestoreApi.p
 \`\`\`
 
 ### CI/CD
+
 Runs automatically on every push via GitHub Actions.
 
 ## Tech Stack
 Postman · Newman · GitHub Actions · JavaScript (Chai assertions)
+
+## Known Limitation: CI/CD Environment Blocking
+
+This suite passes consistently (20/20 test cases) when run locally via Postman or Newman. However, when executed through GitHub Actions, all requests are blocked by Cloudflare's bot-protection challenge — the API returns an HTML "Just a moment..." interstitial page (HTTP 403) instead of real JSON responses.
+
+This happens because FakeStoreAPI applies stricter anti-bot measures to traffic originating from shared cloud CI IP ranges (used by GitHub Actions, GitLab CI, and similar services) than it does to individual/residential traffic. This is a known constraint of testing free public APIs from CI infrastructure — not a defect in the test suite itself.
+
+**Proof the suite is correct:** all 20 test cases pass reliably when run locally (see the local run screenshot/report). The CI/CD pipeline is included to demonstrate a working GitHub Actions setup; its failure here reflects the target API's bot protection, not the test logic.
