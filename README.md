@@ -28,6 +28,8 @@ Automated API test suite for `https://fakestoreapi.com`, built with Postman and 
 
 **6. GitHub Actions CI runs are blocked by Cloudflare bot protection.** This suite passes consistently (93/93 assertions) when run locally via Postman or Newman. When executed via GitHub Actions, requests are blocked by Cloudflare's bot-protection challenge — the API returns an HTML "Just a moment..." interstitial page (HTTP 403) instead of real JSON responses, since FakeStoreAPI applies stricter anti-bot measures to traffic from shared cloud CI IP ranges than to individual/residential traffic. This is a known constraint of testing free public APIs from CI infrastructure, not a defect in the test suite itself — the same 27 test cases pass reliably when run locally.
 
+**Potential workaround:** A Postman Mock Server (see `/mock-server-notes.md`) could allow CI runs to test against simulated FakeStoreAPI responses, bypassing the Cloudflare block entirely — a direction for future iteration on this suite.
+
 ## How to Run
 
 ### Postman
