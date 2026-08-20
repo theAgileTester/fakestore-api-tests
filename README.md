@@ -50,5 +50,9 @@ Runs automatically on every push via GitHub Actions (`.github/workflows/api-test
 ## Tech Stack
 Postman · Newman · GitHub Actions · JavaScript (Chai assertions)
 
+## Mock Server
+A working mock server (built from this collection) is available for local demonstration purposes, replaying saved examples for key endpoints including boundary and category-filter scenarios.
+
 ## Author
 Built as part of a self-directed API testing practice project, applying skills from a 35-day Postman/Newman/CI-CD learning program.
+
