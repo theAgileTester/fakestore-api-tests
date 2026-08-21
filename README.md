@@ -56,3 +56,11 @@ A working mock server (built from this collection) is available for local demons
 ## Author
 Built as part of a self-directed API testing practice project, applying skills from a 35-day Postman/Newman/CI-CD learning program.
 
+## Retrospective
+
+If this were a real production API, I'd test more deeply around security — authentication edge cases, rate limiting, and injection attempts — since a real service would have real user data and real consequences for a validation gap.
+
+The most valuable finding was discovering that status codes alone can't be trusted for validation — every request returned 200 regardless of whether the resource existed. This taught me to always verify response content, not just the status code, a transferable skill for any API testing project.
+
+If I had another week, I'd add more authentication edge cases — expired tokens, malformed tokens, and missing Authorization headers — to more thoroughly test how the API's auth layer behaves under stress, beyond the valid/invalid password cases already covered.
+
